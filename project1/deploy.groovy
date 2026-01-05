@@ -17,7 +17,7 @@ pipeline {
 
         stage('Configure SSH') {
             steps {
-                sh '''
+                sh """
                 mkdir -p ~/.ssh
                 chmod 700 ~/.ssh
 
@@ -31,27 +31,27 @@ EOF
                 chmod 600 ~/.ssh/known_hosts
 
                 cat ~/.ssh/config
-                '''
+                """
             }
         }
 
         stage('Prepare SSH Key') {
             steps {
-                sh '''
-                  echo "$SSH_KEY64" > /tmp/jenkins_keys/myKey.pem
-                  cat /tmp/jenkins_keys/myKey.pem
-                chmod 600 /tmp/jenkins_keys/myKey.pem
-                ssh-keygen -R ${params.SERVER_IP}
-                '''
+                sh """
+                  echo "$SSH_KEY64" > myKey.pem
+                  cat myKey.pem
+                chmod 600 myKey.pem
+                ssh-keygen -R ${SERVER_IP}
+                """
             }
         }
 
         stage('Deploy Code to Server') {
             steps {
-                sh '''
-                ssh -i/tmp/jenkins_keys/myKey.pem ubuntu@${params.SERVER_IP} \
+                sh """
+                ssh -i myKey.pem ubuntu@${SERVER_IP} \
                 "cd /var/www/html && git pull origin main"
-                '''
+                """
             }
         }
     }
