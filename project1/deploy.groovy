@@ -38,8 +38,8 @@ EOF
         stage('Prepare SSH Key') {
             steps {
                 sh '''
-                echo "$SSH_KEY64" > mykey.pem
-                chmod 600 mykey.pem
+                
+                chmod 600 SSH_KEY64.pem
                 ssh-keygen -R ${SERVER_IP} || true
                 '''
             }
@@ -48,7 +48,7 @@ EOF
         stage('Deploy Code to Server') {
             steps {
                 sh '''
-                ssh -i mykey.pem ubuntu@${SERVER_IP} \
+                ssh -i SSH_KEY64.pem ubuntu@${SERVER_IP} \
                 "cd /var/www/html && git pull origin main"
                 '''
             }
