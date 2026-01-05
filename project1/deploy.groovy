@@ -41,7 +41,7 @@ EOF
                 cat > mykey.pem <<'EOF'
 $SSH_KEY64
 EOF
-                chmod 600 SSH_KEY64.pem
+                chmod 600 mykey.pem
                 ssh-keygen -R ${SERVER_IP} || true
                 '''
             }
