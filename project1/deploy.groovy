@@ -1,24 +1,24 @@
 pipeline {
     agent any
 
-       
     parameters {
         string(
             name: 'SERVER_IP',
             defaultValue: '3.80.113.64',
             description: 'Enter server IP address'
-            )
+        )
     }
 
     environment {
-        SSH_KEY64 = credentials('SSH_KEY64') 
+        SSH_KEY64 = credentials('SSH_KEY64')
     }
 
     stages {
 
         stage('Configure SSH') {
             steps {
-                sh '''
+                sh
+               '''
                 mkdir -p ~/.ssh
                 chmod 700 ~/.ssh
 
@@ -35,8 +35,9 @@ pipeline {
 
         stage('Prepare SSH Key') {
             steps {
-                sh '''
-                echo "$SSH_KEY64" | base64 -d > mykey.pem
+                sh 
+                '''
+                echo "$SSH_KEY64" > mykey.pem
                 chmod 600 mykey.pem
                 ssh-keygen -R ${SERVER_IP} || true
                 '''
@@ -45,7 +46,8 @@ pipeline {
 
         stage('Deploy Code to Server') {
             steps {
-                sh '''
+                sh 
+                '''
                 ssh -i mykey.pem ubuntu@${SERVER_IP} \
                 "cd /var/www/html && git pull origin main"
                 '''
