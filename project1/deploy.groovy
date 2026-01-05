@@ -38,10 +38,8 @@ EOF
         stage('Prepare SSH Key') {
             steps {
                 sh '''
-                cat > mykey.pem <<'EOF'
-               $SSH_KEY64
-               EOF
-               cat mykey.pem
+                  echo "$SSH_KEY64" > mykey.pem
+                  cat mykey.pem 
                 chmod 600 mykey.pem
                 ssh-keygen -R ${SERVER_IP}
                 '''
