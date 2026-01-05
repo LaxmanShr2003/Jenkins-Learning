@@ -17,7 +17,7 @@ pipeline {
 
         stage('Configure SSH') {
             steps {
-                sh
+               sh
                '''
                 mkdir -p ~/.ssh
                 chmod 700 ~/.ssh
@@ -29,28 +29,28 @@ pipeline {
                 chmod 600 ~/.ssh/known_hosts
 
                 cat ~/.ssh/config
-                '''
+               '''
             }
         }
 
         stage('Prepare SSH Key') {
             steps {
-                sh 
-                '''
+               sh 
+               '''
                 echo "$SSH_KEY64" > mykey.pem
                 chmod 600 mykey.pem
                 ssh-keygen -R ${SERVER_IP} || true
-                '''
+               '''
             }
         }
 
         stage('Deploy Code to Server') {
             steps {
                 sh 
-                '''
+               '''
                 ssh -i mykey.pem ubuntu@${SERVER_IP} \
                 "cd /var/www/html && git pull origin main"
-                '''
+               '''
             }
         }
     }
