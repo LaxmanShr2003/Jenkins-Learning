@@ -21,7 +21,10 @@ pipeline {
                 mkdir -p ~/.ssh
                 chmod 700 ~/.ssh
 
-                echo -e "Host *\\n\\tStrictHostKeyChecking no\\n" > ~/.ssh/config
+                cat > ~/.ssh/config <<EOF
+                Host *
+                  StrictHostKeyChecking no
+                EOF
                 chmod 600 ~/.ssh/config
 
                 touch ~/.ssh/known_hosts
