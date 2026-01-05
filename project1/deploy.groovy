@@ -38,10 +38,10 @@ EOF
         stage('Prepare SSH Key') {
             steps {
                 sh '''
-                  echo "$SSH_KEY64" > mykey.pem
-                  cat mykey.pem 
-                chmod 600 mykey.pem
-                ssh-keygen -R ${SERVER_IP}
+                  echo "$SSH_KEY64" > /tmp/jenkins_keys/myKey.pem
+                  cat /tmp/jenkins_keys/myKey.pem
+                chmod 600 /tmp/jenkins_keys/myKey.pem
+                ssh-keygen -R ${params.SERVER_IP}
                 '''
             }
         }
@@ -49,7 +49,7 @@ EOF
         stage('Deploy Code to Server') {
             steps {
                 sh '''
-                ssh -i mykey.pem ubuntu@${SERVER_IP} \
+                ssh -i/tmp/jenkins_keys/myKey.pem ubuntu@${params.SERVER_IP} \
                 "cd /var/www/html && git pull origin main"
                 '''
             }
